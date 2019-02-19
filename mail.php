@@ -6,16 +6,15 @@
 	if(!$response)
 		echo "Failed\n";
 	else{
-		$message_ids=imap_search($response,ALL);
+		$message_ids=imap_search($response,'From "no-reply@spacee.jp"');
 		print_r($message_ids);
 		foreach($message_ids as $message_id){
 			$header=imap_headerinfo($response,$message_id);
 			$subject=mb_decode_mimeheader($header->subject);
 			echo $subject."\n";
 			$body=imap_fetchbody($response,$message_id,1,FT_INTERNAL);
-			$body=trim($body);
-			$body=mb_convert_encoding($body,'JIS');
-			echo $body."\n";
+			$body=base64_decode($body);
+			echo $body;
 		}
 	}
 ?>
