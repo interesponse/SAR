@@ -1,6 +1,6 @@
 <?php
-	require_once '/mnt/c/Users/toron/Desktop/mingw/app/CloudWorks/SAR/Graphs/jpgraph-4.2.6/src/jpgraph.php';
-	require_once '/mnt/c/Users/toron/Desktop/mingw/app/CloudWorks/SAR/Graphs/jpgraph-4.2.6/src/jpgraph_bar.php';
+	require_once 'Graphs/jpgraph-4.2.6/src/jpgraph.php';
+	require_once 'Graphs/jpgraph-4.2.6/src/jpgraph_bar.php';
 	$data= array(
 		'data' => array(
     		array(151, 170, 140, 116, 157),
