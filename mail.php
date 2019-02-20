@@ -67,10 +67,6 @@
 		}
 		else if(strpos($subject, trim($file_names[0])) and strpos($subject,"スペース予約確定") ){
 			$body=imap_fetchbody($response,$message_id,1,FT_INTERNAL);
-			if(base64_decode($body)==false){
-				file_put_contents("base64.txt",$body);
-				exit(0);
-			}
 			$body=base64_decode($body);
 			echo $subject."\n";
 			Extract_spacee1($body);
