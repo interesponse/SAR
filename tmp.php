@@ -1,6 +1,6 @@
 <?php
 	$a=file("titles.txt");
-	$f="スペイシー";//true
+	$f= "スペイシー";//true
 	$ff="スぺイシー";//false
 	var_dump($f);
 	var_dump($ff);
@@ -12,4 +12,55 @@
 			echo '$tt='.$tt."\n";
 		}
 	}
+/*
+Result:
+
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+$tt=
+$t =1
+*/
 ?>
