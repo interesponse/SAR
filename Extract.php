@@ -27,6 +27,7 @@
 		public $date_e;
 		public $client_name;
 		public $client_mail;
+		public $operation=0;
 		public function output(){
 			echo "Site name : ".$this->site_name."\n";
 			echo "Booking  No.".$this->booking_number."\n";
@@ -50,12 +51,12 @@
 		$address=strpos($str,"住所:");$address=mb_split(" ",substr($str,$address))[1];
 		$map=strpos($str,"MAP:");$map=mb_split("[ \n]",substr($str,$map))[1];
 		$info=new Elements();
-		$info->booking_number=$number;
-		$info->space_name=$space_name;
-		$info->price=mb_ereg_replace("[,円￥\ 　]",'',$price);
+		$info->booking_number=trim($number);
+		$info->space_name=trim($space_name);
+		$info->price=trim(mb_ereg_replace("[,円￥\ 　]",'',$price));
 		list($info->date_s,$info->date_e)=convert_datetime($date);
-		$info->client_name=mb_ereg_replace('[　 ]*様','',$client_name);
-		$info->client_mail=$client_mail;
+		$info->client_name=trim(mb_ereg_replace('[　 ]*様','',$client_name));
+		$info->client_mail=trim($client_mail);
 		$info->site_name='Spacee';
 		return $info;
 	}
@@ -68,12 +69,12 @@
 		$client_name=strpos($str,"[お名前]");$client_name=mb_split("\n",substr($str,$client_name))[1];
 		$client_phone=strpos($str,"[電話番号]");$client_phone=mb_split("\n",substr($str,$client_phone))[1];
 		$info=new Elements();
-		$info->booking_number=$number;
-		$info->space_name=$space_name;
+		$info->booking_number=trim($number);
+		$info->space_name=trim($space_name);
 		list($info->date_s,$info->date_e)=convert_datetime($date);
-		$info->price=mb_ereg_replace("[,円￥\ 　]",'',$price);
-		$info->client_name=mb_ereg_replace('[　 ]*様','',$client_name);
-		$info->client_mail=$client_mail;
+		$info->price=trim(mb_ereg_replace("[,円￥\ 　]",'',$price));
+		$info->client_name=trim(mb_ereg_replace('[　 ]*様','',$client_name));
+		$info->client_mail=trim($client_mail);
 		$info->site_name='Resnavi';
 		return $info;
 	}
@@ -86,13 +87,13 @@
 		$number=array_search("予約ID",$str);$number=$str[$number+2];
 		$client_name=array_search("お名前",$str);$client_name=$str[$client_name+2];
 		$info=new Elements();
-		$info->booking_number=$number;
-		$info->space_name=$space_name;
+		$info->booking_number=trim($number);
+		$info->space_name=trim($space_name);
 		list($info->date_s,$info->date_e)=convert_datetime($date);
-		$info->price=$price;
-		$info->price=mb_ereg_replace("[,円￥\ 　]",'',$price);
-		$info->client_name=mb_ereg_replace('[　 ]*様','',$client_name);
-		$info->client_mail=$client_mail;
+		$info->price=trim($price);
+		$info->price=trim(mb_ereg_replace("[,円￥\ 　]",'',$price));
+		$info->client_name=trim(mb_ereg_replace('[　 ]*様','',$client_name));
+		$info->client_mail=trim($client_mail);
 		$info->site_name='Spacemarket';
 		return $info;
 	}
