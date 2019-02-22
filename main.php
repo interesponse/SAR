@@ -12,7 +12,8 @@
 		echo "Failed\n";
 		exit(1);
 	}
-	$message_ids=imap_search($mail->box,'From "no-reply@" BEFORE "10 February 2019"');
+	//$message_ids=imap_search($mail->box,'From "no-reply@" BEFORE "10 February 2019"');
+	$message_ids=imap_sort($mail->box,SORTARRIVAL,0);
 	foreach($message_ids as $message_id){
 		$db=$mail->classifier($message_id);
 		if(is_null($db))
@@ -21,6 +22,8 @@
 			$db->output();
 			$mysqli->insert($db);
 		}else if($db->operation==-1){
+			$db->output();
+			$mysqli->delete($db);
 		}
 	}
 ?>

@@ -2,7 +2,7 @@
 	class Database{
 		public $mysqli;
 		function __construct(){
-			$this->mysqli=new mysqli('localhost','root','password','SAR');
+	  		$this->mysqli=new mysqli('localhost','root','password','SAR');
 			if($this->mysqli->connect_error){
 				echo $this->mysqli->connect_error;
 				echo "error";
@@ -21,7 +21,15 @@
 			return 0;
 		}
 		public function delete($element){
-			
+			$res=$this->mysqli->query("select client from essential where id=$element->booking_number;");
+			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
+			$client=null;foreach($res as $tmp)$client=$tmp['client'];
+			$res=$this->mysqli->query("delete from essential where booking_id=$element->booking_number;");
+			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
+			$res=$this->mysqli->query("delete from service where booking_id=$element->booking_number;");
+			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
+			$res=$this->mysqli->query("delete from client_info where client_id=$client;");
+			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
 		}
 	}
 ?>

@@ -5,6 +5,7 @@
 			$db=null;
 			$header=imap_headerinfo($this->box,$message_id);
 			$subject=mb_decode_mimeheader($header->subject);
+			echo $subject."\n";
 			if(strpos($subject, 'スペイシー')){
 				$body=imap_fetchbody($this->box,$message_id,1,FT_INTERNAL);
 				if(strpos($subject,"入金を確認しました") ){
@@ -19,6 +20,7 @@
 					echo $subject."\n";
 					echo $body."\n";
 					$db=Extract_spacee0($body);
+					$db->operation=0;
 					exit(1);
 				}
 			}
@@ -33,6 +35,7 @@
 				}else if(strpos($subject,"予約がキャンセル")){
 					echo $subject."\n";
 					echo end(mb_split('\.',$subject))."\n";
+					$db->operation=0;
 					$db=Extract_resnavi0($body);
 				}else if(strpos($subject,"入金を確認できません")){
 					$db=Extract_resnavi0($body);
@@ -41,11 +44,12 @@
 			else{
 				$body=imap_fetchbody($this->box,$message_id,1,FT_INTERNAL);
 				$body=imap_qprint($body);
-				if(strpos($subject,"今すぐ予約")and false){
+				if(strpos($subject,"今すぐ予約")){
 					$db=Extract_spacemarket0($body);
 					$db->operation=1;
 				}else if(strpos($subject,"予約キャンセル")){
 					$db=Extract_spacemarket0($body);
+					$db->operation=0;
 				}else if(strpos($subject,"予約内容の変更リクエスト：承諾")){
 					$db=Extract_spacemarket0($body);
 				}else if(strpos($subject,"予約内容の変更リクエスト")){
