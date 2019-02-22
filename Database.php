@@ -2,10 +2,9 @@
 	class Database{
 		public $mysqli;
 		function __construct(){
-	  		$this->mysqli=new mysqli('localhost','root','password','SAR');
+	  		$this->mysqli=new mysqli('localhost','root','pass','SAR');
 			if($this->mysqli->connect_error){
-				echo $this->mysqli->connect_error;
-				echo "error";
+				echo $this->mysqli->connect_error."\n";
 				exit(1);
 			}
 			$this->mysqli->set_charset('utf8');
@@ -30,6 +29,7 @@
 			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
 			$res=$this->mysqli->query("delete from client_info where client_id=$client;");
 			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
+			return 0;
 		}
 	}
 ?>

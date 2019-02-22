@@ -26,6 +26,8 @@
 		public $client_name;
 		public $client_mail;
 		public $operation=0;
+		public $body;
+		public $subject;
 		public function output(){
 			echo "Site name : ".$this->site_name."\n";
 			echo "Booking  No.".$this->booking_number."\n";
@@ -49,6 +51,7 @@
 		$address=strpos($str,"住所:");$address=mb_split(" ",substr($str,$address))[1];
 		$map=strpos($str,"MAP:");$map=mb_split("[ \n]",substr($str,$map))[1];
 		$info=new Elements();
+		$info->body=$str;
 		$info->booking_number=trim($number);
 		$info->space_name=trim($space_name);
 		$info->price=trim(mb_ereg_replace("[,円￥\ 　]",'',$price));
@@ -67,6 +70,7 @@
 		$client_name=strpos($str,"[お名前]");$client_name=mb_split("\n",substr($str,$client_name))[1];
 		$client_phone=strpos($str,"[電話番号]");$client_phone=mb_split("\n",substr($str,$client_phone))[1];
 		$info=new Elements();
+		$info->body=$str;
 		$info->booking_number=trim($number);
 		$info->space_name=trim($space_name);
 		list($info->date_s,$info->date_e)=convert_datetime($date);
@@ -85,6 +89,7 @@
 		$number=array_search("予約ID",$str);$number=$str[$number+2];
 		$client_name=array_search("お名前",$str);$client_name=$str[$client_name+2];
 		$info=new Elements();
+		$info->body=$str;
 		$info->booking_number=trim($number);
 		$info->space_name=trim($space_name);
 		list($info->date_s,$info->date_e)=convert_datetime($date);

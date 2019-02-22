@@ -20,10 +20,12 @@
 			continue;
 		if($db->operation==1){
 			$db->output();
-			$mysqli->insert($db);
+			if($mysqli->insert($db))
+				file_put_contents("Error.txt",var_dump($db->subject)."\n".var_dump($db->body)."\n\n",FILE_APPEND);
 		}else if($db->operation==-1){
 			$db->output();
-			$mysqli->delete($db);
+			if($mysqli->delete($db))
+				file_put_contents("Error.txt",var_dump($db->subject)."\n".var_dump($db->body)."\n\n",FILE_APPEND);
 		}
 	}
 ?>

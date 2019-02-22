@@ -16,12 +16,10 @@
 					$body=my_base64_decode($body);
 					$db=Extract_spacee0($body);
 				}else if(strpos($subject,"未入金の") ){
+					//unchecked
 					$body=base64_decode($body);
-					echo $subject."\n";
-					echo $body."\n";
 					$db=Extract_spacee0($body);
 					$db->operation=0;
-					exit(1);
 				}
 			}
 			else if(strpos($subject,trim('れすなび'))){
@@ -33,8 +31,7 @@
 					$db=Extract_resnavi0($body);
 					$db->operation=1;
 				}else if(strpos($subject,"予約がキャンセル")){
-					echo $subject."\n";
-					echo end(mb_split('\.',$subject))."\n";
+					//unchecked
 					$db->operation=0;
 					$db=Extract_resnavi0($body);
 				}else if(strpos($subject,"入金を確認できません")){
@@ -44,6 +41,8 @@
 			else{
 				$body=imap_fetchbody($this->box,$message_id,1,FT_INTERNAL);
 				$body=imap_qprint($body);
+				if(strpos($body,'body')===false)
+					$body=base64_decode($body);
 				if(strpos($subject,"今すぐ予約")){
 					$db=Extract_spacemarket0($body);
 					$db->operation=1;
@@ -58,7 +57,10 @@
 					$db=Extract_spacemarket0($body);
 				}
 			}
-			if(!is_null($db)) return $db;
+			if(!is_null($db)){
+				$db->subject=$subject;
+				return $db;
+			}
 			return null;
 		}
 	}
