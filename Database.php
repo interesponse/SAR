@@ -12,19 +12,16 @@
 		}
 		public function insert($element){
 			// $element=to_null($element);
-			$res=$this->mysqli->query("insert into essential (booking_no,site_name,space_name,client) values($element->booking_number,'$element->site_name','$element->space_name','$element->client_name');");
-			if(!$res){
-				echo $this->mysqli->error."\tessential"."\n";
-				return 1;
-			}
 			$res=$this->mysqli->query("insert into service (booking_no,start_date,end_date,price) values($element->booking_number,'$element->date_s','$element->date_e',$element->price);");
-			if(!$res){
-				echo $this->mysqli->error."\tservice"."\n";
-				return 1;
-			}
+			if(!$res){echo $this->mysqli->error."\service"."\n";return 1;}
 			$res=$this->mysqli->query("insert into client_info (name,mail) values('$element->client_name','$element->client_mail');");
-			if(!$res)echo $this->mysqli->error."\tclient_info"."\n";
+			if(!$res){echo $this->mysqli->error."\client_info"."\n";return 1;}
+			$res=$this->mysqli->query("insert into essential (booking_no,site_name,space_name,client) values($element->booking_number,'$element->site_name','$element->space_name',".$this->mysqli->insert_id.");");
+			if(!$res){echo $this->mysqli->error."\tessential"."\n";return 1;}
 			return 0;
+		}
+		public function delete($element){
+			
 		}
 	}
 ?>
