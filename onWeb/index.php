@@ -5,6 +5,7 @@
 </head>
 <body>
 	<?php
+		session_start();
 		//cell coloring bgcolor=*
 		class Table{
 			public $id;
@@ -31,9 +32,10 @@
 					foreach($row as $data){
 						if($i==0)
 							$code.="<th>$data</th>".PHP_EOL;
-						else
+						else{
 							$code.="<td ".$color[$i][$j].">$data</td>".PHP_EOL;
 							$j++;
+						}
 					}
 					$i++;
 					$code.="</tr>".PHP_EOL;
@@ -84,11 +86,14 @@
 				}
 				$range=$max-$min;
 				$color;
+				for($i=0;$i<count($table);$i++)
+					for($j=0;$j<count($table[$i]);$j++)
+						$color[$i][$j]='';
 				for($i=1;$i<count($table);$i++){
 					for($j=1;$j<count($table[$i]);$j++){
 						$Rx=($Re-$Ri)*($table[$i][$j]/$range)+$Ri;
 						$Gx=($Ge-$Gi)*($table[$i][$j]/$range)+$Gi;
-						$Bx=($Be-$Bi)*($table[$i][$J]/$range)+$Bi;
+						$Bx=($Be-$Bi)*($table[$i][$j]/$range)+$Bi;
 						$color[$i][$j]="style=background-color:rgb($Rx,$Gx,$Bx);";
 					}
 				}
@@ -146,38 +151,49 @@
 		}
 		$mysqli=new mysqli("localhost","root","pass","SAR");
 		Create_table::$mysqli=$mysqli;
-		$table_list=array();
-		$id=0;
 		if(isset($_POST['update'])){
+			echo "---------------  ".$_POST['id']."----------\n";
 			if($_POST['table_type']=='Sales'){
-				$table_list[(int)$_POST['id']]=
-				Create_table::sales((int)$_POST['id'],'2019-01-01','2019-03-01');
+				$_SESSION['table'][(int)$_POST['id']]=
+				Create_table::sales((int)$_POST['id'],null,null);
 			}else if($_POST['table_type']=='Utilizations'){
-				$table_list[(int)$_POST['id']]=
-				Create_table::utilizations((int)$_POST['id'],'2019-01-01','2019-03-01');
+				$_SESSION['table'][(int)$_POST['id']]=
+				Create_table::utilizations((int)$_POST['id'],null,null);
 			}
 		}
 		if(isset($_POST['append'])){
+			echo "append ----- ".$_SESSION['id']."\n";
 			if($_POST['table_type']=='Sales'){
-				$table_list[$id]=Create_table::sales($id,'2019-01-01','2019-03-01');
+				$_SESSION['table'][$_SESSION['id']]=
+				Create_table::sales($_SESSION['id'],null,null);
 			}
 			else if($_POST['table_type']=='Utilizations'){
-				$table_list[$id]=Create_table::sales($id,'2019-01-01','2019-03-01');
+				$_SESSION['table'][$_SESSION['id']]=
+				Create_table::utilizations($_SESSION['id'],null,null);
 			}
-			$id++;
+			$_SESSION['id']++;
 		}
 		if(isset($_POST['delete'])){
-			unset($table_list[$_POST['id']]);
+			unset($_SESSION['table'][(int)$_POST['id']]);
 		}
-		if(!compact($table_list)){
-			$table_list[$id]=Create_table::sales($id,'2019-01-01','2019-03-01');
-			$id++;
+		if(isset($_SESSION)){
+			if(!isset($_SESSION['id'])){
+				echo "initialize\n";
+				echo session_id();
+				$_SESSION['id']=0;
+				$_SESSION['table'][$_SESSION['id']]=
+				Create_table::sales($_SESSION['id'],'2019-01-01','2019-030-1');
+				$_SESSION['id']++;
+				$_SESSION['table'][$_SESSION['id']]=
+				Create_table::sales($_SESSION['id'],'2019-01-01','2019-030-1');
+				$_SESSION['id']++;
+			}
 		}
-		ksort($table_list);
-		foreach($table_list as $table){
+		ksort($_SESSION['table']);
+		foreach($_SESSION['table'] as $table){
 			$table->output();
 		}
-//		echo var_dump($table_list);
+//		session_destroy();
 	?>
 </body>
 </html>

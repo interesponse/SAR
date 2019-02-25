@@ -1,3 +1,7 @@
 <?php
-	$mysqli=new mysqli('localhost','root','pass','SAR');
+	class a{
+		public static $b=2;
+	}
+	$b=new a();
+	echo a::$b."\n";
 ?>
