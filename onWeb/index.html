@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<head>
+	<meta charset=utf8>
+</head>
+<body>
+	<?php
+		if($error_ms)echo $error_ms;
+	?>
+	<form action=index.php method=POST>
+		ID:<input type=text name=user_name>
+		Password:<input type=password name=password>
+		<input type=submit name=login value=login>
+	</form>
+</body>
+
