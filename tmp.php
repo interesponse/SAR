@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 	require_once 'Database.php';
 	$mysqli=new Database();
 	$list=$mysqli->mysqli->query("select distinct space_name from essential;");
@@ -14,4 +15,9 @@
 			echo $match."\t".$percent."\n\n\n";
 		}
 	}
+=======
+	if(true)
+		$a=20;
+	echo $a;
+>>>>>>> 003e7a831bfa31f2a0459a2f7c253dc6a8fde1d8
 ?>
