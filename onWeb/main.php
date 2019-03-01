@@ -211,6 +211,40 @@
 						where service.start_date between '$start_date' and '$end_date') as new group by space_name;";
 				return $query;
 			}
+			public static function table($id,$start_date=null,$end_date=null,$information,$query_function){
+				if(is_null($end_date)){
+					$start_date=$_POST['start_date'];
+					$end_date=$_POST['end_date'];
+				}
+				$table_obj=new Table();
+				$query=$query_function($start_date,$end_date);
+				$res=Create_table::$mysqli->query($query);
+				$table=Table::to_table($res);
+				if($information){
+					$start_date2;$end_date2;
+					if(!is_null($_POST['start_date2'])){
+						$start_date2=$_POST['start_date2'];
+						$end_date2=$_POST['end_date2'];
+					}else{
+						$start_date2=date('Y-m-d',strtotime($start_date."-1 month"));
+						$end_date2=date('Y-m-d',strtotime($end_date."-1 month"));
+					}$query=$query_function($start_date2,$end_date2);
+					$res=Create_table::$mysqli->query($query);
+					$table2=Table::to_table($res);
+					$table=Table::comparison($table2,$table);
+				}$table_obj->start_date=$start_date;
+				$table_obj->end_date=$end_date;
+				$table_obj->information=$information;
+				if($_POST['heatmap']=='all')
+					$color=Table::heatmap_all($table);
+				else if($_POST['heatmap']=='row')
+					$color=Table::heatmap_row($table);
+				else if($_POST['heatmap']=='column')
+					$color=Table::heatmap_column($table);
+				$table_obj->html_table($id,$table,$color);
+				return $table_obj;
+			}
+/*
 			public static function sales($id,$start_date=null,$end_date=null,$information){
 				if(is_null($end_date)){
 					$start_date=$_POST['start_date'];
@@ -281,26 +315,27 @@
 				$table_obj->html_table($id,$table,$color);
 				return $table_obj;
 			}
+*/
 		}
 		$mysqli=new mysqli("localhost","root","pass","SAR");
 		Create_table::$mysqli=$mysqli;
 		if(isset($_POST['update'])){
 			if($_POST['table_type']=='Sales'){
 				$_SESSION['table'][(int)$_POST['id']]=
-				Create_table::sales((int)$_POST['id'],null,null,(int)$_POST['comparison_flag']);
+				Create_table::table((int)$_POST['id'],null,null,(int)$_POST['comparison_flag'],Create_table::sales_query);
 			}else if($_POST['table_type']=='Utilizations'){
 				$_SESSION['table'][(int)$_POST['id']]=
-				Create_table::utilizations((int)$_POST['id'],null,null,(int)$_POST['comparison_flag']);
+				Create_table::table((int)$_POST['id'],null,null,(int)$_POST['comparison_flag'],Create_table::utilizations_query);
 			}
 		}
 		if(isset($_POST['append'])){
 			if($_POST['table_type']=='Sales'){
 				$_SESSION['table'][$_SESSION['id']]=
-				Create_table::sales($_SESSION['id'],null,null);
+				Create_table::table($_SESSION['id'],null,null,null,Create_table::sales_query);
 			}
 			else if($_POST['table_type']=='Utilizations'){
 				$_SESSION['table'][$_SESSION['id']]=
-				Create_table::utilizations($_SESSION['id'],null,null);
+				Create_table::table($_SESSION['id'],null,null,null,Create_table::utilizations_query);
 			}
 			$_SESSION['id']++;
 		}
@@ -310,19 +345,19 @@
 		if(isset($_POST['comparison'])){
 			if($_POST['table_type']=='Sales'){
 				$_SESSION['table'][(int)$_POST['id']]=
-				Create_table::sales((int)$_POST['id'],null,null,!(int)$_POST['comparison_flag']);
+				Create_table::table((int)$_POST['id'],null,null,!(int)$_POST['comparison_flag'],Create_table::sales_query);
 			}else if($_POST['table_type']=='Utilizations'){
 				$_SESSION['table'][(int)$_POST['id']]=
-				Create_table::utilizations((int)$_POST['id'],null,null,!(int)$_POST['comparison_flag']);
+				Create_table::table((int)$_POST['id'],null,null,!(int)$_POST['comparison_flag'],Create_table::utilizations_query);
 			}
 		}
 		if(!isset($_SESSION['id'])){
 			$_SESSION['id']=0;
 			$_SESSION['table'][$_SESSION['id']]=
-			Create_table::sales($_SESSION['id'],'2019-01-01','2019-030-1');
+			Create_table::table($_SESSION['id'],'2019-01-01','2019-030-1',null,Create_table::sales_query);
 			$_SESSION['id']++;
 			$_SESSION['table'][$_SESSION['id']]=
-			Create_table::sales($_SESSION['id'],'2019-01-01','2019-030-1');
+			Create_table::table($_SESSION['id'],'2019-01-01','2019-030-1',null,Create_table::utilizations_query);
 			$_SESSION['id']++;
 		}
 		ksort($_SESSION['table']);
