@@ -1,0 +1,22 @@
+select space_name,
+	sum(case when '06' between time(start_date) and time(end_date)then 1 else 0 end)as '06',
+	sum(case when '07' between time(start_date) and time(end_date)then 1 else 0 end)as '07',
+	sum(case when '08' between time(start_date) and time(end_date)then 1 else 0 end)as '08',
+	sum(case when '09' between time(start_date) and time(end_date)then 1 else 0 end)as '09',
+	sum(case when '10' between time(start_date) and time(end_date)then 1 else 0 end)as '10',
+	sum(case when '11' between time(start_date) and time(end_date)then 1 else 0 end)as '11',
+	sum(case when '12' between time(start_date) and time(end_date)then 1 else 0 end)as '12',
+	sum(case when '13' between time(start_date) and time(end_date)then 1 else 0 end)as '13',
+	sum(case when '14' between time(start_date) and time(end_date)then 1 else 0 end)as '14',
+	sum(case when '15' between time(start_date) and time(end_date)then 1 else 0 end)as '15',
+	sum(case when '16' between time(start_date) and time(end_date)then 1 else 0 end)as '16',
+	sum(case when '17' between time(start_date) and time(end_date)then 1 else 0 end)as '17',
+	sum(case when '18' between time(start_date) and time(end_date)then 1 else 0 end)as '18',
+	sum(case when '19' between time(start_date) and time(end_date)then 1 else 0 end)as '19',
+	sum(case when '20' between time(start_date) and time(end_date)then 1 else 0 end)as '20',
+	sum(case when '21' between time(start_date) and time(end_date)then 1 else 0 end)as '21',
+	sum(case when '22' between time(start_date) and time(end_date)then 1 else 0 end)as '22',
+	sum(case when '23' between time(start_date) and time(end_date)then 1 else 0 end)as '23',
+	sum(case when '24' between time(start_date) and time(end_date)then 1 else 0 end)as '24'
+from (select service.*,new_essential.space_name from service join new_essential on service.booking_no=new_essential.booking_no)as t
+group by space_name;

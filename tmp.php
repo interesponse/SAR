@@ -1,4 +1,7 @@
 <?php
-		$a=20;
-	echo $a;
+	function a(){
+		echo date('Y-m-d');
+	}
+	$b=a;
+	$b();
 ?>
