@@ -1,5 +1,6 @@
 <?php
 <<<<<<< HEAD
+<<<<<<< HEAD
 	require_once 'Database.php';
 	$mysqli=new Database();
 	$list=$mysqli->mysqli->query("select distinct space_name from essential;");
@@ -17,6 +18,8 @@
 	}
 =======
 	if(true)
+=======
+>>>>>>> 40b90664fc25f4bb54c3db246d6761f32fb64ffb
 		$a=20;
 	echo $a;
 >>>>>>> 003e7a831bfa31f2a0459a2f7c253dc6a8fde1d8
