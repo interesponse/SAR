@@ -1,6 +1,7 @@
 <?php
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	require_once 'Database.php';
 	$mysqli=new Database();
 	$list=$mysqli->mysqli->query("select distinct space_name from essential;");
@@ -23,4 +24,11 @@
 		$a=20;
 	echo $a;
 >>>>>>> 003e7a831bfa31f2a0459a2f7c253dc6a8fde1d8
+=======
+	function a(){
+		echo date('Y-m-d');
+	}
+	$b=a;
+	$b();
+>>>>>>> 464447d0d8db9e05d0712ce09cb91ba163de81fe
 ?>

@@ -276,8 +276,8 @@
 						group by space_name)as f join spaces on space_name=spaces.name;";
 				return $query;
 			}
-			public static function profits_query($start_date,$end_date){
-				$query="select f.space_name,`01`-rent as '01',`02`-rent as'02',`03`-rent as'03',`04`-rent as'04',
+			private static function profits_query($start_date,$end_date){
+				$query=":select f.space_name,`01`-rent as '01',`02`-rent as'02',`03`-rent as'03',`04`-rent as'04',
 						`05`-rent as '05',`06`-rent as'06',`07`-rent as'07',`08`-rent as'08',`09`-rent as'09',
 						`10`-rent as '10',`11`-rent as'11',`12`-rent as'12'
 						from(select space_name,
@@ -298,7 +298,7 @@
 						group by space_name)as f join spaces on space_name=spaces.name;";
 				return $query;
 			}
-			public static function profits_ratio_query($start_date,$end_date){
+			private static function profits_ratio_query($start_date,$end_date){
 				$query="select f.space_name,(`01`-rent)/`01` as '01',(`02`-rent)/`02` as'02',(`03`-rent)/`03` as'03',(`04`-rent)/`04` as'04',
 						(`05`-rent)/`05` as '05',(`06`-rent)/`06` as'06',(`07`-rent)/`07` as'07',(`08`-rent)/`08` as'08',
 						(`09`-rent)/`09` as '09',(`10`-rent)/`10` as'10',(`11`-rent)/`11` as'11',(`12`-rent)/`12` as'12'
@@ -315,8 +315,7 @@
 						sum(case when '10'=date_format(start_date,'%m')then price else 0 end)as '10',
 						sum(case when '11'=date_format(start_date,'%m')then price else 0 end)as '11',
 						sum(case when '12'=date_format(start_date,'%m')then price else 0 end)as '12'
-						from (select service.*,new_essential.space_name from service join new_essential on service.booking_no=new_essential.booking_no
-						where start_date between '$start_date' and '$end_date') as t
+						from (select service.*,new_essential.space_name from service join new_essential on service.booking_no=new_essential.booking_no) as t
 						group by space_name)as f join spaces on space_name=spaces.name;";
 				return $query;
 			}
@@ -332,7 +331,6 @@
 				$table_obj=new Table();
 				$query=$query_function($start_date,$end_date);
 				$res=Create_table::$mysqli->query($query);
-				var_dump($mysqli->error);	
 				$table=Table::to_table($res);
 				if($information){
 					$start_date2;$end_date2;
@@ -363,9 +361,8 @@
 					'Monthly Sales'=>'Create_table::monthly_sales_query',
 					'Rent by Sales'=>'Create_table::rent_by_sales_query',
 					'Profits'=>'Create_table::profits_query',
-					'Profits ratio'=>"Create_table::profits_ratio_query"
+					'Profits ration'=>'Create_table::profits_ratio_query'
 					];
-		//main
 		if(isset($_POST['update'])){
 			$_SESSION['table'][(int)$_POST['id']]=
 			Create_table::table((int)$_POST['id'],(int)$_POST['comparison_flag'],$query_list[$_POST['table_type']]);
